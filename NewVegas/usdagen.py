@@ -125,7 +125,7 @@ def write_dds(file_name, img):
     width, height = img.size
     channels = len(img.getbands())
     mipmaps = int(math.log2(min(width, height)))+1
-    if channels != 1 and channels != 4:
+    if channels not in [1, 4]:
         raise NotImplementedError(f'Writing {channels} channel DDS unsupported')
     with open(file_name, 'wb') as f:
         # Header
@@ -148,7 +148,7 @@ def write_dds(file_name, img):
         # DX10 Header
         if channels == 1:
             f.write(u32(61)) # R8_UNORM
-        elif channels == 4:
+        else:
             f.write(u32(28)) # R8G8B8A8_UNORM
         f.write(u32(3)) # Texture2D resource
         f.write(u32(0)) # Misc flags
