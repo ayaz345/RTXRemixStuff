@@ -7,7 +7,7 @@ def calculate_DDS_hash(file_path):
         data = file.read()
 
     # Extract info from the DDS header
-    if data[0:4] != b'DDS ':
+    if data[:4] != b'DDS ':
         print(f'Warning: {file_path}: Missing DDS header')
         return None
     dwHeight = int.from_bytes(data[12:16], "little")
@@ -25,7 +25,7 @@ def calculate_DDS_hash(file_path):
         mipsize = mipsize*bitCount//8
 
     # Calculate hash of the first mipmap
-    return "0x" + xxhash.xxh3_64(data[128:128+mipsize]).hexdigest().upper()
+    return f"0x{xxhash.xxh3_64(data[128:128 + mipsize]).hexdigest().upper()}"
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
